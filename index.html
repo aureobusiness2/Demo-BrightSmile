@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrightSmile Dental Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0891B2;
+      --teal-light: #E0F5FA;
+      --teal-dark: #065e7c;
+      --cream: #FAFAF7;
+      --charcoal: #1A1A2E;
+      --mid: #4A5568;
+      --soft: #94A3B8;
+      --white: #ffffff;
+      --gold: #D4A853;
+      --radius: 16px;
+      --shadow: 0 4px 32px rgba(8,145,178,0.10);
+      --shadow-lg: 0 12px 48px rgba(8,145,178,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+      background: rgba(250,250,247,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(8,145,178,0.10);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(8,145,178,0.12); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 38px; height: 38px; background: var(--teal);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-icon svg { width: 22px; height: 22px; fill: white; }
+    .nav-logo-text { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; color: var(--charcoal); line-height: 1; }
+    .nav-logo-text span { color: var(--teal); }
+
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      color: var(--mid); transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--teal); border-radius: 2px;
+      transform: scaleX(0); transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--teal); }
+
+    .btn-primary {
+      background: var(--teal); color: white; border: none; cursor: pointer;
+      padding: 11px 26px; border-radius: 999px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(8,145,178,0.30);
+    }
+    .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(8,145,178,0.40); }
+
+    .btn-outline {
+      background: transparent; color: var(--teal); border: 2px solid var(--teal);
+      cursor: pointer; padding: 11px 26px; border-radius: 999px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; display: inline-block;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: var(--teal); color: white; transform: translateY(-1px); }
+
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--teal); border-radius: 2px; transition: all 0.3s; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 100px 5% 60px;
+      gap: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -20%; right: -10%; width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(8,145,178,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal-light); color: var(--teal-dark);
+      padding: 6px 16px; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+      margin-bottom: 24px;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; background: var(--teal); border-radius: 50%;
+      animation: pulse 2.4s cubic-bezier(0.4,0,0.6,1) infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 700; line-height: 1.1;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+      animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .hero h1 em { color: var(--teal); font-style: italic; }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--mid); line-height: 1.7;
+      max-width: 480px; margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .hero-cta {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.32s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 56px;
+      animation: fadeUp 0.7s 0.44s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700;
+      color: var(--charcoal); line-height: 1;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--soft); font-weight: 500; margin-top: 4px; }
+
+    .hero-image {
+      position: relative; z-index: 1;
+      animation: fadeIn 0.9s 0.25s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .hero-image-main {
+      width: 100%; height: 520px;
+      object-fit: cover; border-radius: 24px 24px 80px 24px;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-image-float {
+      position: absolute; bottom: -20px; left: -30px;
+      background: white; border-radius: var(--radius);
+      padding: 16px 20px; box-shadow: var(--shadow-lg);
+      display: flex; align-items: center; gap: 12px;
+      animation: floatBob 4s cubic-bezier(0.45,0.05,0.55,0.95) infinite;
+    }
+    @keyframes floatBob {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-9px); }
+      100% { transform: translateY(0px); }
+    }
+    .float-icon { width: 44px; height: 44px; background: var(--teal-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .float-icon svg { width: 22px; height: 22px; }
+    .float-text { font-size: 0.85rem; font-weight: 600; color: var(--charcoal); }
+    .float-sub { font-size: 0.75rem; color: var(--soft); }
+
+    .hero-image-badge {
+      position: absolute; top: 24px; right: -16px;
+      background: var(--gold); color: white;
+      border-radius: 12px; padding: 12px 16px; text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .badge-num { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; line-height: 1; }
+    .badge-label { font-size: 0.7rem; font-weight: 600; opacity: 0.9; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--teal); padding: 14px 0; overflow: hidden;
+    }
+    .marquee-track {
+      display: flex; gap: 48px; width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item {
+      display: flex; align-items: center; gap: 12px;
+      color: rgba(255,255,255,0.85); font-size: 0.85rem; font-weight: 500;
+      white-space: nowrap;
+    }
+    .marquee-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 100px 5%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .about-images { position: relative; }
+    .about-img-main {
+      width: 88%; height: 460px; object-fit: cover;
+      border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    }
+    .about-img-accent {
+      position: absolute; bottom: -32px; right: 0;
+      width: 55%; height: 220px; object-fit: cover;
+      border-radius: var(--radius); border: 6px solid var(--cream);
+      box-shadow: var(--shadow-lg);
+    }
+    .about-card {
+      position: absolute; top: 32px; right: 0;
+      background: var(--charcoal); color: white;
+      padding: 20px 24px; border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+    .about-card-icon { margin-bottom: 8px; display: flex; }
+    .about-card-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; }
+    .about-card-sub { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+    .section-tag {
+      display: inline-block; color: var(--teal); font-size: 0.8rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700; line-height: 1.2; margin-bottom: 20px;
+    }
+    .section-body {
+      color: var(--mid); line-height: 1.75; font-size: 0.975rem; margin-bottom: 32px;
+    }
+
+    .about-features { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+    .feature-row { display: flex; align-items: flex-start; gap: 14px; }
+    .feature-icon {
+      width: 40px; height: 40px; min-width: 40px; background: var(--teal-light);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .feature-icon svg { width: 20px; height: 20px; stroke: var(--teal); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .feature-text strong { display: block; font-size: 0.9rem; margin-bottom: 2px; }
+    .feature-text span { font-size: 0.82rem; color: var(--soft); }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: 100px 5%;
+      background: var(--charcoal);
+    }
+    .services-header {
+      text-align: center; margin-bottom: 60px;
+    }
+    .services-header .section-tag { color: var(--gold); }
+    .services-header .section-title { color: white; }
+    .services-header p { color: rgba(255,255,255,0.55); max-width: 520px; margin: 0 auto; font-size: 0.975rem; }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .service-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      overflow: hidden; cursor: pointer;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(8,145,178,0.5);
+      box-shadow: 0 16px 48px rgba(8,145,178,0.2);
+    }
+    .service-img { width: 100%; height: 200px; object-fit: cover; }
+    .service-body { padding: 24px; }
+    .service-icon { margin-bottom: 12px; display: flex; align-items: center; }
+    .service-icon svg { width: 32px; height: 32px; stroke: var(--teal); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .service-name { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600; color: white; margin-bottom: 8px; }
+    .service-desc { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 16px; }
+    .service-link { color: var(--teal); font-size: 0.83rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .service-link:hover { gap: 10px; }
+    .service-link::after { content: '→'; }
+
+    .services-cta { text-align: center; margin-top: 48px; }
+
+    /* ── REVIEWS ── */
+    .reviews { padding: 100px 5%; }
+    .reviews-header { text-align: center; margin-bottom: 56px; }
+    .reviews-header p { color: var(--mid); max-width: 480px; margin: 0 auto; }
+
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    .review-card {
+      background: white; border-radius: var(--radius);
+      padding: 32px; box-shadow: var(--shadow);
+      border: 1px solid rgba(8,145,178,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .review-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .review-card.featured { background: var(--teal); color: white; }
+    .review-card.featured .review-text { color: rgba(255,255,255,0.85); }
+    .review-card.featured .reviewer-role { color: rgba(255,255,255,0.6); }
+
+    .stars { display: flex; gap: 3px; margin-bottom: 16px; align-items: center; }
+    .review-text { font-size: 0.92rem; color: var(--mid); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .reviewer-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .reviewer-name { font-weight: 600; font-size: 0.9rem; }
+    .reviewer-role { font-size: 0.78rem; color: var(--soft); margin-top: 2px; }
+
+    /* ── BOOK CTA ── */
+    .book-cta {
+      margin: 0 5% 100px;
+      background: var(--teal);
+      border-radius: 24px;
+      padding: 80px 10%;
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px;
+      position: relative; overflow: hidden;
+    }
+    .book-cta::before {
+      content: '';
+      position: absolute; top: -60%; right: -5%; width: 400px; height: 400px;
+      background: rgba(255,255,255,0.06); border-radius: 50%;
+      pointer-events: none;
+    }
+    .book-cta-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; color: white; margin-bottom: 12px; }
+    .book-cta-sub { color: rgba(255,255,255,0.75); font-size: 0.975rem; line-height: 1.6; }
+    .btn-white {
+      background: white; color: var(--teal); border: none; cursor: pointer;
+      padding: 14px 32px; border-radius: 999px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; display: inline-block; white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.20); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 60px 5% 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 1.8fr 1fr 1fr 1.2fr; gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .nav-logo-text { color: white; }
+    .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-top: 14px; margin-bottom: 24px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.85rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .social-btn:hover { background: var(--teal); color: white; }
+
+    .footer-col h4 { color: white; font-size: 0.875rem; font-weight: 600; margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--teal); }
+
+    .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+    .footer-icon { margin-top: 2px; opacity: 0.55; flex-shrink: 0; }
+    .footer-contact-text { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.8rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; scale: 0.98; } to { opacity: 1; scale: 1; }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 120px; text-align: center; }
+      .hero-image { order: -1; }
+      .hero-image-main { height: 340px; border-radius: 20px; }
+      .hero-image-badge { right: 8px; }
+      .hero-stats { justify-content: center; }
+      .hero-cta { justify-content: center; }
+      .about { grid-template-columns: 1fr; gap: 48px; }
+      .about-img-main { width: 100%; height: 320px; }
+      .about-img-accent { display: none; }
+      .about-card { top: 16px; right: 16px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .book-cta { grid-template-columns: 1fr; text-align: center; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 110px 5% 60px; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+      .hero-cta a { width: 100%; text-align: center; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; justify-content: center; }
+      .hero-image-main { height: 260px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .about { padding: 60px 5%; }
+      .book-cta { padding: 48px 8%; margin: 0 4% 60px; }
+      .book-cta-title { font-size: 1.6rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      section, .about, .services, .reviews { padding-left: 5%; padding-right: 5%; }
+    }
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 1.9rem; }
+      .nav-logo-text { font-size: 1rem; }
+      .hero-image-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C9.5 2 7.5 3.8 7 6.2 6.5 4.5 5 3.5 3.5 4 1.5 4.8 1 7.5 2.5 10c1 1.8 2.5 3 4 3.5L7.5 20c-.3 1.2.5 2 1.5 2s1.8-.8 2-2l1-5 1 5c.2 1.2 1 2 2 2s1.8-.8 1.5-2L16.5 13.5c1.5-.5 3-1.7 4-3.5C22 7.5 21.5 4.8 19.5 4c-1.5-.5-3 .5-3.5 2.2C15.5 3.8 13.5 2 12 2z"/>
+      </svg>
+    </div>
+    <span class="nav-logo-text">Bright<span>Smile</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="team.html">Our Team</a></li>
+    <li><a href="appointments.html">Appointments</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="appointments.html" class="btn-primary nav-cta">Book Appointment</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Now Accepting New Patients</div>
+    <h1>Your Smile Deserves the <em>Very Best</em> Care</h1>
+    <p class="hero-sub">BrightSmile Dental Clinic brings world-class dental care to Naga City. From routine cleanings to full smile transformations — we've got you covered.</p>
+    <div class="hero-cta">
+      <a href="appointments.html" class="btn-primary">Book an Appointment</a>
+      <a href="services.html" class="btn-outline">View Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">5,000+</span>
+        <span class="stat-label">Happy Patients</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">12+</span>
+        <span class="stat-label">Years of Care</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Satisfaction Rate</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img
+      class="hero-image-main"
+      src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=80"
+      alt="Modern dental clinic interior"
+    />
+    <div class="hero-image-float">
+      <div class="float-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="float-text">Next Available Slot</div>
+        <div class="float-sub">Today · 2:00 PM</div>
+      </div>
+    </div>
+    <div class="hero-image-badge">
+      <div class="badge-num">4.9</div>
+      <div class="badge-label">★ Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <!-- two copies for seamless loop -->
+    <span class="marquee-item"><span class="marquee-dot"></span>General Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Teeth Whitening</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Braces & Aligners</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dental Implants</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Root Canal</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Veneers</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>PhilHealth Accredited</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pediatric Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>General Dentistry</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Teeth Whitening</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Braces & Aligners</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dental Implants</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Root Canal</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Veneers</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>PhilHealth Accredited</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pediatric Dentistry</span>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section class="about">
+  <div class="about-images reveal">
+    <img
+      class="about-img-main"
+      src="https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=800&q=80"
+      alt="Dentist with patient"
+    />
+    <img
+      class="about-img-accent"
+      src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&q=80"
+      alt="Dental equipment"
+    />
+    <div class="about-card">
+      <div class="about-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0891B2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+          <circle cx="12" cy="8" r="6"/>
+          <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+        </svg>
+      </div>
+      <div class="about-card-title">PRC Accredited</div>
+      <div class="about-card-sub">All licensed professionals</div>
+    </div>
+  </div>
+  <div class="about-content reveal">
+    <span class="section-tag">About Us</span>
+    <h2 class="section-title">Trusted Dental Care in the Heart of Naga City</h2>
+    <p class="section-body">BrightSmile Dental Clinic has been serving families across Bicol since 2012. Our team of dedicated, PRC-licensed dentists combines modern technology with a warm, patient-first approach — because we believe going to the dentist should never feel stressful.</p>
+    <div class="about-features">
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2c-2.5 0-4.5 1.8-5 4.2C6.5 4.5 5 3.5 3.5 4 1.5 4.8 1 7.5 2.5 10c1 1.8 2.5 3 4 3.5L7.5 20c-.3 1.2.5 2 1.5 2s1.8-.8 2-2l1-5 1 5c.2 1.2 1 2 2 2s1.8-.8 1.5-2L16.5 13.5c1.5-.5 3-1.7 4-3.5C22 7.5 21.5 4.8 19.5 4c-1.5-.5-3 .5-3.5 2.2C15.5 3.8 13.5 2 12 2z"/></svg>
+        </div>
+        <div class="feature-text">
+          <strong>State-of-the-Art Equipment</strong>
+          <span>Digital X-rays, intraoral cameras, and laser-assisted procedures for accurate and comfortable treatment.</span>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="feature-text">
+          <strong>Patient-Centered Approach</strong>
+          <span>We take the time to explain every step so you feel confident and cared for at every visit.</span>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <div class="feature-text">
+          <strong>PhilHealth Accredited</strong>
+          <span>Eligible procedures are covered under your PhilHealth benefits. We help you navigate your coverage.</span>
+        </div>
+      </div>
+    </div>
+    <a href="team.html" class="btn-primary">Meet Our Team</a>
+  </div>
+</section>
+
+<!-- ── SERVICES PREVIEW ── -->
+<section class="services">
+  <div class="services-header reveal">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">Our Most Popular Treatments</h2>
+    <p>From everyday checkups to complete smile makeovers, we offer a full range of dental services for every age and need.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <img
+        class="service-img"
+        src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=600&q=80"
+        alt="General dentistry"
+      />
+      <div class="service-body">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2c-2.5 0-4.5 1.8-5 4.2C6.5 4.5 5 3.5 3.5 4 1.5 4.8 1 7.5 2.5 10c1 1.8 2.5 3 4 3.5L7.5 20c-.3 1.2.5 2 1.5 2s1.8-.8 2-2l1-5 1 5c.2 1.2 1 2 2 2s1.8-.8 1.5-2L16.5 13.5c1.5-.5 3-1.7 4-3.5C22 7.5 21.5 4.8 19.5 4c-1.5-.5-3 .5-3.5 2.2C15.5 3.8 13.5 2 12 2z"/></svg>
+        </div>
+        <div class="service-name">General Dentistry</div>
+        <div class="service-desc">Cleanings, fillings, extractions, and complete oral health checkups to keep your smile in peak condition.</div>
+        <a href="services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <img
+        class="service-img"
+        src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600&q=80"
+        alt="Cosmetic dentistry"
+      />
+      <div class="service-body">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <div class="service-name">Cosmetic & Whitening</div>
+        <div class="service-desc">Professional teeth whitening, veneers, and smile design to give you the confidence to show off your best smile.</div>
+        <a href="services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <img
+        class="service-img"
+        src="https://images.pexels.com/photos/3762453/pexels-photo-3762453.jpeg?auto=compress&cs=tinysrgb&w=600"
+        alt="Orthodontics braces"
+      />
+      <div class="service-body">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8" cy="12" r="1.5" fill="#0891B2"/><circle cx="12" cy="12" r="1.5" fill="#0891B2"/><circle cx="16" cy="12" r="1.5" fill="#0891B2"/><line x1="3" y1="12" x2="5.5" y2="12"/><line x1="18.5" y1="12" x2="21" y2="12"/></svg>
+        </div>
+        <div class="service-name">Braces & Aligners</div>
+        <div class="service-desc">Traditional metal braces, ceramic braces, and clear aligners to straighten your teeth at any age.</div>
+        <a href="services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+  </div>
+  <div class="services-cta reveal">
+    <a href="services.html" class="btn-primary">See All Services</a>
+  </div>
+</section>
+
+<!-- ── REVIEWS ── -->
+<section class="reviews">
+  <div class="reviews-header reveal">
+    <span class="section-tag">Patient Reviews</span>
+    <h2 class="section-title">What Our Patients Say</h2>
+    <p>Real stories from real people who trust us with their smiles.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="stars">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+      </div>
+      <p class="review-text">"BrightSmile completely changed how I feel about going to the dentist. The clinic is so clean and modern, and the staff made me feel totally at ease. My teeth have never looked better!"</p>
+      <div class="reviewer">
+        <img class="reviewer-avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria" />
+        <div>
+          <div class="reviewer-name">Maria Santos</div>
+          <div class="reviewer-role">Patient since 2021 · Naga City</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card featured reveal">
+      <div class="stars">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.9)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.9)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.9)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.9)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.9)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+      </div>
+      <p class="review-text">"Had my braces done here and the results were beyond what I expected. Dr. Reyes is incredibly skilled and always took time to explain the process. Highly recommend to everyone in Bicol!"</p>
+      <div class="reviewer">
+        <img class="reviewer-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlo" />
+        <div>
+          <div class="reviewer-name">Carlo Mendoza</div>
+          <div class="reviewer-role">Patient since 2020 · Pili, Camarines Sur</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F59E0B"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+      </div>
+      <p class="review-text">"I used my PhilHealth here and the staff guided me through all the paperwork. It was completely hassle-free. Great service, affordable rates, and a genuinely caring team."</p>
+      <div class="reviewer">
+        <img class="reviewer-avatar" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ana" />
+        <div>
+          <div class="reviewer-name">Ana Villanueva</div>
+          <div class="reviewer-role">Patient since 2022 · Iriga City</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOK CTA ── -->
+<div class="book-cta reveal">
+  <div>
+    <h2 class="book-cta-title">Ready for Your Best Smile?</h2>
+    <p class="book-cta-sub">Schedule your appointment today — new patients welcome, same-week slots available. Walk-ins also accepted.</p>
+  </div>
+  <a href="appointments.html" class="btn-white">Book Now →</a>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C9.5 2 7.5 3.8 7 6.2 6.5 4.5 5 3.5 3.5 4 1.5 4.8 1 7.5 2.5 10c1 1.8 2.5 3 4 3.5L7.5 20c-.3 1.2.5 2 1.5 2s1.8-.8 2-2l1-5 1 5c.2 1.2 1 2 2 2s1.8-.8 1.5-2L16.5 13.5c1.5-.5 3-1.7 4-3.5C22 7.5 21.5 4.8 19.5 4c-1.5-.5-3 .5-3.5 2.2C15.5 3.8 13.5 2 12 2z"/>
+          </svg>
+        </div>
+        <span class="nav-logo-text">Bright<span>Smile</span></span>
+      </a>
+      <p class="footer-tagline">Modern, compassionate dental care for the whole family in Naga City, Bicol. Your smile is our mission.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Instagram">ig</a>
+        <a href="#" class="social-btn" title="Messenger">m</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="appointments.html">Appointments</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="services.html">General Dentistry</a></li>
+        <li><a href="services.html">Teeth Whitening</a></li>
+        <li><a href="services.html">Braces & Aligners</a></li>
+        <li><a href="services.html">Dental Implants</a></li>
+        <li><a href="services.html">Root Canal</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <div class="footer-contact-item">
+        <span class="footer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span class="footer-contact-text">123 Magsaysay Ave., Naga City, Camarines Sur 4400</span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="footer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+        <span class="footer-contact-text">(054) 123-4567<br/>+63 917 123 4567</span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="footer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span class="footer-contact-text">Mon–Sat: 8:00 AM – 6:00 PM<br/>Sun: By Appointment</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 BrightSmile Dental Clinic. All rights reserved.</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;">Made with <svg viewBox="0 0 24 24" width="14" height="14" fill="#e05" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> in Naga City, Bicol</span>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Hamburger (mobile)
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    const cta = document.querySelector('.nav-cta');
+    const isOpen = links.style.display === 'flex';
+    if (isOpen) {
+      links.style.display = '';
+      cta.style.display = '';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:rgba(250,250,247,0.98);padding:24px 5%;gap:20px;border-bottom:1px solid rgba(8,145,178,0.1);backdrop-filter:blur(18px);z-index:998;';
+      cta.style.cssText = 'display:block;margin:0 5%;';
+    }
+  }
+</script>
+
+</body>
+</html>
